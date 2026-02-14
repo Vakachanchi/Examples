@@ -1,0 +1,235 @@
+info:
+  title: LoggingService
+  description: API предназначено для логирования данных клиента
+  contact:
+    name: 
+    email: 
+  version: 1.0.0
+paths:
+  /rest/v1/LoggingService/SendEvent:
+    post:
+      description: Отправка в очередь
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                MessageID:
+                  type: string
+                  description: ID сообщения в Kafka
+        "401":
+          description: Unauthorized
+        "504":
+          description: Server timeout
+  /rest/v1/LoggingService/ReadDQL:
+    get:
+       description: Чтение сообщений из DLQ 
+       requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              Count:
+                type: number
+                description: Количество запрашиваемых сообщений
+              MessageID:
+                type: string
+                description: ID сообщения в Kafka
+components:
+  schemas:
+    Page:
+      type: object
+      description: Информация о странице
+      properties:
+        visit:
+          type: boolean
+          description: Факт перехода на страницу
+        page_address:
+          type: string
+          description: Адрес страницы
+        page_title:
+          type: string
+          description: Название страницы
+        visit_beginning_time:
+          type: datetime
+          description: Дата и время перехода на страницу
+        visit_duration:
+          type: number
+          description: Время на странице
+        visit_ending_time:
+          type: datetime
+          description: Дата и время перехода со страницы 
+    Tech_Information:
+      type: object
+      description: Служебные параметры
+      properties:
+        device_type:
+          type: string
+          description: Тип устройства 
+        device_os:
+          type: string
+          description: Тип операционной системы
+        user_id:
+          type: string
+          description: ID пользовательского пути
+        ocdb_id:
+          type: number
+          description: ID мастер-записи
+        ucdb_id:
+          type: number
+          description: ID заявки
+        session_auth:
+          type:  boolean
+          description: Сессия авторизована?
+        sign_in_source:
+          type: string
+          description: Источник входа
+        card_bound_result:
+          type: string
+          description: Результат привязки карты
+    Calculator:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: Сумма займа c калькулятора
+        term:
+          type: number
+          description: Срок займа c калькулятора
+    Document:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название документа 
+        opened:
+          type: datetime
+          description: Дата и время открытия документа
+        review_duration:
+          type: number
+          description: Время на документе
+    Code:
+      type: object
+      properties:
+        attempt:
+          type: number
+          description: Номер попытки 
+        code_entering_time:
+          type: datetime
+          description: Дата и время ввода кода
+        correct:
+          type: boolean
+          description: Корректный или некорректный код
+        requested_new_code:
+          type: boolean
+          description: Факт запроса нового кода
+        request_time:
+          type: datetime
+          description: Дата и время запроса нового кода
+    Checkbox:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название
+        enables_count:
+          type: number
+          description: Количество нажатий
+        hides_count:
+          type: number
+          description: Количество снятий
+        watching_duration:
+            type: number
+            description: Время просмотра
+    Toggle:
+      type: object
+      properties:
+        title: 
+          type: string
+          description: Название тоггла
+        enables_count:
+          type: number
+          description: Количество активаций тоггла
+        disables_count:
+          type: number
+          description: Количество снятий тоггла
+    Link:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название ссылки
+        address:
+          type: string
+          description: Адрес ссылки
+        link_opened:
+          type: number
+          description: Количество переходов по ссылке
+    Field:
+      type: object
+      properties:
+        ID:
+          type: number
+          description: ID поля
+        title:
+          type: string
+          description: Название поля
+        block_title:
+          type: string
+          description: Название блока
+        filling_sequence:
+          type: number
+          description: Очередность заполнения полей
+        filling_duration:
+          type: number
+          description: Длительность заполнения каждого поля
+        filling_count:
+          type: number 
+          description: Количество попыток заполнения поля
+    Iteration:
+      type: object
+      properties:
+        ID:
+          type: number
+          description: ID поля
+        field_title:
+          type: string
+          description: Название поля
+        start_filling_time:
+          type: datetime
+          description: Дата и время старта заполнения каждого варианта
+        end_filling_time:
+          type: datetime
+          description: Дата и время окончания заполнения каждого варианта
+        entered_data:
+          type: string
+          description: Введённые данные
+        filling_method:
+          type: string
+          description: Ввод данных вручную/вставка данных в поле
+    Event:
+      type: object
+      properties:
+        action_code:
+          type: number
+          description: Код события
+        action_title:
+          type: string
+          description: Название события
+    Card:
+      type: object
+      description: Карта клиента
+      properties:
+        selection_count:
+          type: number
+          description: Количество нажатий на выбранную карту
+        new_card:
+          type: bool
+          description: Карта привязана в ходе этой сессии пользователя?
